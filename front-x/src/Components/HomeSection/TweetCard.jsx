@@ -96,9 +96,9 @@ const TweetCard = () => {
           </div>
 
           <div className='mt-2'>
-            <div className='cursor-pointer'>
+            <div onClick={() => navigate(`/twit/${3}`)} className='cursor-pointer'>
                 <p className='mb-2 p-0'>hello !</p>
-                <img className='w-[28rem] border border-gray-400 p-5 rounded-md' src="https://plus.unsplash.com/premium_photo-1718204436526-277f9f34607c?q=80&w=1509&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" />
+                <img className='w-[28rem] border border-gray-400 p-5 rounded-md' src="https://plus.unsplash.com/premium_photo-1718747305176-8dab6d6abece?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="" />
             </div>
             <div className='py-5 flex flex-wrap justify-between items-center'>
               <div className='space-x-3 flex items-center text-gray-600'>
