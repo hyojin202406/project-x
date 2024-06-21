@@ -12,13 +12,18 @@ import TabContext from '@mui/lab/TabContext';
 import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import TweetCard from '../HomeSection/TweetCard';
+import ProfileModal from './ProfileModal';
 
 const Profile = () => {
 
   const [tabValue, setTabValue] = useState("1")
 
   const navigate = useNavigate()
-  
+
+  const [openProfileModal, setOpenProfileModal] = useState(false);
+  const handleOpenProfileModal = () => setOpenProfileModal(true);
+  const handleClose = () => setOpenProfileModal(false);
+
   const handleBack = () => {
     navigate(-1);
   }
@@ -63,7 +68,7 @@ const Profile = () => {
         {
           true ? (
             <Button 
-            onClick={handleOpenProfile}
+            onClick={handleOpenProfileModal}
             className='rounded-full' variant='contained' sx={{borderRadius:"20px"}}>Edit Profile</Button>
           ) : (
             <Button 
@@ -138,6 +143,10 @@ const Profile = () => {
         <TabPanel value="4">Likes</TabPanel>
       </TabContext>
     </Box>
+      </section>
+
+      <section>
+        <ProfileModal handleClose={handleClose} open={openProfileModal}/>
       </section>
     </div>
   )
