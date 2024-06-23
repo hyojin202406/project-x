@@ -1,0 +1,23 @@
+spring:
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: create
+  datasource:
+    url: jdbc:mysql://localhost:3306/projectx?useSSL=false&serverTimezone=UTC
+    username: root
+    password: 1234
+    driver-class-name: com.mysql.cj.jdbc.Driver
+#  datasource:
+#    url: jdbc:h2:mem:testdb
+#    username: sa
+  h2:
+    console:
+      enabled: true
+jwt:
+  issuer: hyojin202406@gmail.com
+  secret_key: study-springboot
