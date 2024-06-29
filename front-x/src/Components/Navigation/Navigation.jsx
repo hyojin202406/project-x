@@ -1,62 +1,87 @@
 import React from 'react'
 import { navigationMenu } from './NavigationMenu'
 import { useNavigate } from 'react-router-dom'
-import { Avatar, Button, Menu, MenuItem } from '@mui/material';
-import MoreHorizIcon from '@mui/icons-material/MoreHoriz';
+import { Avatar, Button, Menu, MenuItem } from '@mui/material'
+import MoreHorizIcon from '@mui/icons-material/MoreHoriz'
+import { useDispatch, useSelector } from 'react-redux'
+import { logout } from '../Store/Auth/Action'
 
 const Navigation = () => {
+  const { auth } = useSelector((store) => store)
+  const [anchorEl, setAnchorEl] = React.useState(null)
+  const dispatch = useDispatch()
 
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
+  const open = Boolean(anchorEl)
   const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+    setAnchorEl(event.currentTarget)
+  }
   const handleClose = () => {
-    setAnchorEl(null);
-  };
-  
-  const navigate = useNavigate();
-  const handleLogout = () => {
-    console.log("logout")
-    handleClose()
+    setAnchorEl(null)
   }
 
+  const navigate = useNavigate()
+  const handleLogout = () => {
+    console.log('logout')
+    handleClose()
+    dispatch(logout())
+  }
 
   return (
-    <div className='h-screen sticky top-0'>
+    <div className="h-screen sticky top-0">
       <div>
-        <div className='py-5'>
-          <svg height="30" width="30" viewBox="0 0 24 24" aria-hidden="true" className="r-4qtqp9 r-yyyyoo r-dnmrzs r-bnwqim r-lrvibr r-m6rgpd r-lrsllp r-1nao33i r-16y2uox r-8kz0gk"><g><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></g></svg>
+        <div className="py-5">
+          <svg
+            height="30"
+            width="30"
+            viewBox="0 0 24 24"
+            aria-hidden="true"
+            className="r-4qtqp9 r-yyyyoo r-dnmrzs r-bnwqim r-lrvibr r-m6rgpd r-lrsllp r-1nao33i r-16y2uox r-8kz0gk"
+          >
+            <g>
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path>
+            </g>
+          </svg>
         </div>
-        <div className='space-y-6'>
-          {navigationMenu.map((item) => 
-            <div className='cursor-pointer flex space-x-3' onClick={() => item.title === "Profile" ? navigate(`/profile/${5}`) : navigate(item.path)}>
+        <div className="space-y-6">
+          {navigationMenu.map((item) => (
+            <div
+              className="cursor-pointer flex space-x-3"
+              onClick={() =>
+                item.title === 'Profile'
+                  ? navigate(`/profile/${5}`)
+                  : navigate(item.path)
+              }
+            >
               {item.icon}
-              <p className='text-xl'>{item.title}</p>
+              <p className="text-xl">{item.title}</p>
             </div>
-          )}
+          ))}
         </div>
-        <div className='py-10'>
-          <Button 
-            sx={{width:"100%", borderRadius:"29px", py:"15px", bgcolor:"1e88e5"}}
-            variant='contained'
+        <div className="py-10">
+          <Button
+            sx={{
+              width: '100%',
+              borderRadius: '29px',
+              py: '15px',
+              bgcolor: '1e88e5',
+            }}
+            variant="contained"
           >
             Tweet
           </Button>
         </div>
       </div>
 
-      <div className='flex items-center justify-between'>
-        <div className='flex items-center space-x-3'>
-          <Avatar
-            alt="username"
-            src="/images/profile.png"
-          />
-          <div className='flex flex-col'>
-            <span>Code With HyoJin</span>
-            <span className='opacity-70'>@hyojin</span>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center space-x-3">
+          <Avatar alt="username" src="/images/profile.png" />
+          <div className="flex flex-col">
+            <p>{auth.user?.fullName}</p>
+            <span className="opacity-70">
+              @{auth.user?.fullName.split(' ').join('_').toLowerCase()}
+            </span>
           </div>
-          
+
           <Button
             id="basic-button"
             aria-controls={open ? 'basic-menu' : undefined}
@@ -64,7 +89,7 @@ const Navigation = () => {
             aria-expanded={open ? 'true' : undefined}
             onClick={handleClick}
           >
-            <MoreHorizIcon/>
+            <MoreHorizIcon />
           </Button>
           <Menu
             id="basic-menu"

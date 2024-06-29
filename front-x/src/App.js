@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, useNavigate } from 'react-router-dom'
 
 import './App.css'
 import Authentication from './Components/Authentication/Authentication'
@@ -11,10 +11,12 @@ function App() {
   const jwt = localStorage.getItem('jwt')
   const { auth } = useSelector((store) => store)
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (jwt) {
       dispatch(getUserProfile(jwt))
+      navigate('/')
     }
   }, [auth.jwt])
 

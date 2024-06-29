@@ -8,6 +8,7 @@ import {
   GET_USER_PROFILE_SUCCESS,
   REGISTER_USER_FAILURE,
   GET_USER_PROFILE_FAILURE,
+  LOGOUT,
 } from './ActionType'
 
 const initialState = {
@@ -30,6 +31,9 @@ export const authReducer = (state = initialState, action) => {
 
     case GET_USER_PROFILE_SUCCESS:
       return { ...state, loading: false, error: null, user: action.payload }
+
+    case LOGOUT:
+      return initialState
 
     case LOGIN_USER_FAILURE:
     case REGISTER_USER_FAILURE:

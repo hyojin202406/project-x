@@ -17,7 +17,7 @@ const HomePage = () => {
 
       <Grid item xs={12} lg={6} className="hidden lg:block w-full relative">
         <Routes>
-          <Route path="/" element={<Authentication />}></Route>
+          <Route path="/" element={<HomeSection />}></Route>
           <Route path="/home" element={<HomeSection />}></Route>
           <Route path="/profile/:id" element={<Profile />}></Route>
           <Route path="/twit/:id" element={<TwitDetails />}></Route>
