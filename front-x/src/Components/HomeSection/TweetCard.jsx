@@ -9,14 +9,18 @@ import FileUploadIcon from '@mui/icons-material/FileUpload'
 import BarChartIcon from '@mui/icons-material/BarChart'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import ReplyModal from './ReplyModal'
+import { FavoriteOutlined } from '@mui/icons-material'
+import { useDispatch } from 'react-redux'
+import { createReTweet, likeTweet } from '../Store/Twit/Action'
 
-const TweetCard = () => {
+const TweetCard = ({ item }) => {
   const [anchorEl, setAnchorEl] = useState(null)
   const open = Boolean(anchorEl)
 
   const [openReplyModal, setOpenReplyModal] = useState(false)
   const handleOpenReplyModal = () => setOpenReplyModal(true)
   const handleCloseReplyModal = () => setOpenReplyModal(false)
+  const dispatch = useDispatch()
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget)
@@ -38,10 +42,12 @@ const TweetCard = () => {
   }
 
   const handleCreateRetweet = () => {
+    dispatch(createReTweet(item.id))
     console.log('handle create retweet ')
   }
 
   const handleLiketweet = () => {
+    dispatch(likeTweet(item._id))
     console.log('handle like tweet ')
   }
 
@@ -54,7 +60,7 @@ const TweetCard = () => {
 
       <div className="flex space-x-5">
         <Avatar
-          onClick={() => navigate(`/profile/${6}`)}
+          onClick={() => navigate(`/profile/${item?.user.id}`)}
           className="cursor-pointer"
           alt="username"
           src="/images/profile.png"
@@ -62,8 +68,10 @@ const TweetCard = () => {
         <div className="w-full">
           <div className="flex justify-between items-center">
             <div className="flex cursor-pointer items-center space-x-2">
-              <span className="font-semibold">Code With Hyojin</span>
-              <span className="text-gray-600">@Hyojin . 2m</span>
+              <span className="font-semibold">{item?.user?.fullName}</span>
+              <span className="text-gray-600">
+                @{item?.user?.fullName.split(' ').join('_').toLowerCase()}
+              </span>
               <img
                 className="ml-2 w-5 h-5"
                 src="https://abs-0.twimg.com/emoji/v2/svg/1f31e.svg"
@@ -98,13 +106,14 @@ const TweetCard = () => {
 
           <div className="mt-2">
             <div
-              onClick={() => navigate(`/twit/${3}`)}
+              onClick={() => navigate(`/twit/${item?.id}`)}
               className="cursor-pointer"
             >
-              <p className="mb-2 p-0">hello !</p>
+              <p className="mb-2 p-0">{item?.content}</p>
               <img
                 className="w-[28rem] border border-gray-400 p-5 rounded-md"
-                src="https://plus.unsplash.com/premium_photo-1718747305176-8dab6d6abece?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                // src="https://plus.unsplash.com/premium_photo-1718747305176-8dab6d6abece?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                src={item?.image}
                 alt=""
               />
             </div>
@@ -114,34 +123,34 @@ const TweetCard = () => {
                   className="cursor-pointer"
                   onClick={handleOpenReplyModal}
                 />
-                <p>43</p>
+                <p>{item?.totalReplies}</p>
               </div>
 
               <div
-                className={`${true ? 'text-pink-600' : 'text-gray-600'} space-x-3 flex items-center`}
+                className={`${item?.liked ? 'text-pink-600' : 'text-gray-600'} space-x-3 flex items-center`}
               >
                 <RepeatIcon
-                  onClick={handleLiketweet}
+                  onClick={handleCreateRetweet}
                   className="cursor-pointer"
                 />
-                <p>54</p>
+                <p>{item?.totalRetweets}</p>
               </div>
 
               <div
-                className={`${true ? 'text-pink-600' : 'text-gray-600'} space-x-3 flex items-center`}
+                className={`${item?.liked ? 'text-pink-600' : 'text-gray-600'} space-x-3 flex items-center`}
               >
-                {true ? (
-                  <FavoriteIcon
+                {item?.liked ? (
+                  <FavoriteOutlined
                     onClick={handleLiketweet}
                     className="cursor-pointer"
                   />
                 ) : (
-                  <FavoriteBorderIcon
+                  <FavoriteIcon
                     onClick={handleLiketweet}
                     className="cursor-pointer"
                   />
                 )}
-                <p>54</p>
+                <p>{item?.totalLikes}</p>
               </div>
 
               <div className="space-x-3 flex items-center text-gray-600">
@@ -164,7 +173,11 @@ const TweetCard = () => {
       </div>
 
       <section>
-        <ReplyModal open={openReplyModal} handleClose={handleCloseReplyModal} />
+        <ReplyModal
+          item={itme}
+          open={openReplyModal}
+          handleClose={handleCloseReplyModal}
+        />
       </section>
     </React.Fragment>
   )

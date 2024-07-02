@@ -9,6 +9,8 @@ import Modal from '@mui/material/Modal'
 import ImageIcon from '@mui/icons-material/Image'
 import FmdGoodIcon from '@mui/icons-material/FmdGood'
 import TagFacesIcon from '@mui/icons-material/TagFaces'
+import { useDispatch } from 'react-redux'
+import { createTweetReply } from '../Store/Twit/Action'
 
 const style = {
   position: 'absolute',
@@ -24,21 +26,23 @@ const style = {
   borderRadius: 4,
 }
 
-const ReplyModal = ({ handleClose, open }) => {
+const ReplyModal = ({ handleClose, open, item }) => {
+  const navigate = useNavigate()
   const [anchorEl, setAnchorEl] = React.useState(null)
   // const [open, setOpen] = React.useState(false)
   // const handleOpen = () => setOpen(true)
   // const handleClose = () => setOpen(false)
   const [uploadingImage, setUploadingImage] = useState(false)
-  const [selectedImage, setSelectedImage] = useState('') // 변경: 초기값 null로 설정
+  const [selectedImage, setSelectedImage] = useState('')
+  const dispatch = useDispatch()
 
   // const handleClick = (event) => {
   //   setAnchorEl(event.currentTarget)
   // }
 
-  const navigate = useNavigate()
-
   const handleSubmit = (values) => {
+    dispatch(createTweetRepl(values))
+    handleClose()
     console.log('handle submit', values)
   }
 
@@ -46,7 +50,7 @@ const ReplyModal = ({ handleClose, open }) => {
     initialValues: {
       content: '',
       image: '',
-      twitId: 4,
+      twitId: item?.id,
     },
     onSubmit: handleSubmit,
   })
