@@ -42,12 +42,12 @@ const TweetCard = ({ item }) => {
   }
 
   const handleCreateRetweet = () => {
-    dispatch(createReTweet(item.id))
+    dispatch(createReTweet(item?.id))
     console.log('handle create retweet ')
   }
 
   const handleLiketweet = () => {
-    dispatch(likeTweet(item._id))
+    dispatch(likeTweet(item?._id))
     console.log('handle like tweet ')
   }
 
@@ -174,7 +174,7 @@ const TweetCard = ({ item }) => {
 
       <section>
         <ReplyModal
-          item={itme}
+          item={item}
           open={openReplyModal}
           handleClose={handleCloseReplyModal}
         />

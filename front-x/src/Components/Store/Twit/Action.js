@@ -63,9 +63,30 @@ export const findTwitsById = (twitId) => async (dispatch) => {
   }
 }
 
+// export const createTweet = (tweetData) => async (dispatch) => {
+//   try {
+//     const { data } = await api.post(`/api/twits/create`, tweetData)
+//     console.log('createTweet : ', data)
+//     dispatch({ type: TWIT_CREATE_SUCCESS, payload: data })
+//   } catch (error) {
+//     console.log('catch error - ', error)
+//     dispatch({ type: TWIT_CREATE_FAILURE, payload: error.message })
+//   }
+// }
+
 export const createTweet = (tweetData) => async (dispatch) => {
   try {
-    const { data } = await api.post(`/api/twits/create`, tweetData)
+    const formData = new FormData()
+    formData.append('content', tweetData.content)
+    if (tweetData.image) {
+      formData.append('image', tweetData.image)
+    }
+
+    const { data } = await api.post(`/api/twits/create`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    })
     console.log('createTweet : ', data)
     dispatch({ type: TWIT_CREATE_SUCCESS, payload: data })
   } catch (error) {

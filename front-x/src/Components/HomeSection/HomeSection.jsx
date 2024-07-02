@@ -7,7 +7,7 @@ import FmdGoodIcon from '@mui/icons-material/FmdGood'
 import TagFacesIcon from '@mui/icons-material/TagFaces'
 import TweetCard from './TweetCard'
 import { useDispatch, useSelector } from 'react-redux'
-import { getAllTweets } from '../Store/Twit/Action'
+import { getAllTweets, createTweet } from '../Store/Twit/Action'
 
 const validationSchema = Yup.object().shape({
   content: Yup.string().required('Tweet text is required'),
@@ -15,34 +15,37 @@ const validationSchema = Yup.object().shape({
 
 const HomeSection = () => {
   const [uploadingImage, setUploadingImage] = useState(false)
-  const [selectedImage, setSelectedImage] = useState('') // 변경: 초기값 null로 설정
+  const [selectedImage, setSelectedImage] = useState(null)
   const dispatch = useDispatch()
   const { twit } = useSelector((store) => store)
 
   const handleSubmit = (values) => {
     console.log('Submitted values:', values)
-    dispatch(createTweet(values)) // 트윗 생성 액션 디스패치
+    dispatch(createTweet(values))
   }
 
   useEffect(() => {
     dispatch(getAllTweets())
-  }, [twit.like, twit.retwit])
+  }, [dispatch, twit.like, twit.retwit])
 
   const formik = useFormik({
     initialValues: {
       content: '',
-      image: '', // 변경: 초기값 null로 설정
+      image: null,
     },
     onSubmit: handleSubmit,
     validationSchema,
   })
 
   const handleSelectImage = (event) => {
-    setUploadingImage(true)
-    const imgUrl = URL.createObjectURL(event.target.files[0]) // 파일 URL 생성
-    formik.setFieldValue('image', event.currentTarget.files[0]) // formik 상태 업데이트
-    setSelectedImage(imgUrl) // 선택된 이미지 업데이트
-    setUploadingImage(false)
+    const file = event.currentTarget.files[0]
+    if (file) {
+      setUploadingImage(true)
+      const imgUrl = URL.createObjectURL(file)
+      formik.setFieldValue('image', file)
+      setSelectedImage(imgUrl)
+      setUploadingImage(false)
+    }
   }
 
   return (
@@ -85,7 +88,7 @@ const HomeSection = () => {
                       name="imageFile"
                       className="hidden"
                       onChange={handleSelectImage}
-                      accept="image/*" // 이미지 파일만 선택 가능하도록 설정
+                      accept="image/*"
                     />
                   </label>
                   <FmdGoodIcon className="text-[#1d9bf0]" />
@@ -108,12 +111,13 @@ const HomeSection = () => {
                 </div>
               </div>
             </form>
+            <div>{selectedImage && <img src="{selectedImage}" alt="" />}</div>
           </div>
         </div>
       </section>
       <section>
         {twit.twits.map((item) => (
-          <TweetCard item={item} />
+          <TweetCard key={item?.id} item={item} />
         ))}
       </section>
     </div>

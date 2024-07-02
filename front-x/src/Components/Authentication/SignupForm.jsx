@@ -55,6 +55,7 @@ const SignupForm = () => {
       const { day, month, year } = values.dateOfBirth
       const dateOfBirth = `${year}-${month}-${day}`
       values.dateOfBirth = dateOfBirth
+
       dispatch(registerUser(values))
       console.log('form values', { ...values, dateOfBirth })
     },

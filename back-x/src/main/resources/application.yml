@@ -11,7 +11,7 @@ spring:
         format_sql: true
     defer-datasource-initialization: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
   datasource:
     url: jdbc:mysql://localhost:3306/projectx?useSSL=false&serverTimezone=UTC
     username: root
@@ -26,3 +26,7 @@ spring:
 jwt:
   issuer: hyojin202406@gmail.com
   secret_key: study-springboot
+
+
+file:
+  upload-dir: C:/study/image

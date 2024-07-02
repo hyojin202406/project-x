@@ -40,5 +40,14 @@ public class Twit {
     private String image;
 
     private LocalDateTime createdAt;
-//    private LocalDateTime CreatedAt;
+
+    @Override
+    public String toString() {
+        return "Twit{" +
+                "id=" + id +
+                ", content='" + content + '\'' +
+                ", image='" + image + '\'' +
+                ", createdAt=" + createdAt +
+                '}';
+    }
 }
