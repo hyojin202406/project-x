@@ -16,6 +16,7 @@ import java.util.List;
 @Data
 @Entity
 public class User implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false)
@@ -26,6 +27,12 @@ public class User implements UserDetails {
 
     @Column(name = "password")
     private String password;
+
+    @Builder
+    public User(String email, String password, String auth) {
+        this.email = email;
+        this.password = password;
+    }
 
     private String fullName;
     private String location;
@@ -56,15 +63,8 @@ public class User implements UserDetails {
     @ManyToMany
     private List<User> followings = new ArrayList<>();
 
-
-
-//    @Builder
-//    public User(String email, String password, String auth) {
-//        this.email = email;
-//        this.password = password;
-//    }
-
     @Override
+    @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority("user"));
     }
