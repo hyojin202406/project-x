@@ -47,7 +47,8 @@ const TweetCard = ({ item }) => {
   }
 
   const handleLiketweet = () => {
-    dispatch(likeTweet(item?._id))
+    console.log('tweetCard item: ', item)
+    dispatch(likeTweet(item?.id))
     console.log('handle like tweet ')
   }
 

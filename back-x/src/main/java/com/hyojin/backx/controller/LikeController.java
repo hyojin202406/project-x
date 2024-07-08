@@ -25,7 +25,7 @@ public class LikeController {
     private LikeService likeService;
 
     @PostMapping("/{twitId}/likes")
-    public ResponseEntity<LikeDto> likeTwit(@PathVariable Long twitId, @RequestHeader("Authorization") String jwt) throws UserException, TwitException {
+    public ResponseEntity<LikeDto> likeTwit(@PathVariable("twitId") Long twitId, @RequestHeader("Authorization") String jwt) throws UserException, TwitException {
         User user = userService.findUserProfileByJwt(jwt);
         Like like = likeService.likeTwit(twitId, user);
 
@@ -34,7 +34,7 @@ public class LikeController {
     }
 
     @PostMapping("/twit/{twitId}")
-    public ResponseEntity<List<LikeDto>> getAllLikes(@PathVariable Long twitId, @RequestHeader("Authorization") String jwt) throws UserException, TwitException {
+    public ResponseEntity<List<LikeDto>> getAllLikes(@PathVariable("twitId") Long twitId, @RequestHeader("Authorization") String jwt) throws UserException, TwitException {
         User user = userService.findUserProfileByJwt(jwt);
         List<Like> likes = likeService.getAllLikes(twitId);
 

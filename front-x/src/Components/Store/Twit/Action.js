@@ -17,6 +17,7 @@ import {
   TWIT_DELETE_SUCCESS,
   USER_LIKE_TWEETS_FAILURE,
   USER_LIKE_TWEETS_SUCCESS,
+  RETWEET_FAILURE,
 } from './ActionType'
 
 export const getAllTweets = () => async (dispatch) => {
@@ -119,7 +120,7 @@ export const createReTweet = (twitId) => async (dispatch) => {
 
 export const likeTweet = (twitId) => async (dispatch) => {
   try {
-    const { data } = await api.post(`/api/${twitId}/like`)
+    const { data } = await api.post(`/api/likes/${twitId}/likes`)
     console.log('likeTweet : ', data)
     dispatch({ type: LIKE_TWEET_SUCCESS, payload: data })
   } catch (error) {

@@ -91,7 +91,7 @@ public class TwitController {
     }
 
     @PutMapping("/{twitId}/retwit")
-    public ResponseEntity<TwitDto> retwit(@PathVariable Long twitId, @RequestHeader("Authorization") String jwt) throws UserException, TwitException {
+    public ResponseEntity<TwitDto> retwit(@PathVariable("twitId") Long twitId, @RequestHeader("Authorization") String jwt) throws UserException, TwitException {
         User user = userService.findUserProfileByJwt(jwt);
         Twit twit = twitService.retwit(twitId, user);
         TwitDto twitDto = TwitDtoMapper.toTwitDto(twit, user);
@@ -99,7 +99,7 @@ public class TwitController {
     }
 
     @GetMapping("/{twitId}")
-    public ResponseEntity<TwitDto> findTwitById(@PathVariable Long twitId, @RequestHeader("Authorization") String jwt) throws UserException, TwitException {
+    public ResponseEntity<TwitDto> findTwitById(@PathVariable("twitId") Long twitId, @RequestHeader("Authorization") String jwt) throws UserException, TwitException {
         User user = userService.findUserProfileByJwt(jwt);
         Twit twit = twitService.findById(twitId);
         TwitDto twitDto = TwitDtoMapper.toTwitDto(twit, user);
@@ -107,7 +107,7 @@ public class TwitController {
     }
 
     @DeleteMapping("/{twitId}")
-    public ResponseEntity<ApiResponse> deleteTwit(@PathVariable Long twitId, @RequestHeader("Authorization") String jwt) throws UserException, TwitException {
+    public ResponseEntity<ApiResponse> deleteTwit(@PathVariable("twitId") Long twitId, @RequestHeader("Authorization") String jwt) throws UserException, TwitException {
         User user = userService.findUserProfileByJwt(jwt);
         twitService.deleteTwitById(twitId, user.getId());
         ApiResponse res = new ApiResponse("Twit deleted Successfully", true);
@@ -129,7 +129,7 @@ public class TwitController {
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<TwitDto>> getUsersAllTwits(@PathVariable Long userId, @RequestHeader("Authorization") String jwt) throws UserException, TwitException {
+    public ResponseEntity<List<TwitDto>> getUsersAllTwits(@PathVariable("userId") Long userId, @RequestHeader("Authorization") String jwt) throws UserException, TwitException {
         User user = userService.findUserProfileByJwt(jwt);
         List<Twit> twits = twitService.getUserTwit(user);
         List<TwitDto> twitDtos = TwitDtoMapper.toTwitDtos(twits, user);
@@ -138,7 +138,7 @@ public class TwitController {
     }
 
     @GetMapping("/user/{userId}/likes")
-    public ResponseEntity<List<TwitDto>> findTwitByLikesContainesUser(@PathVariable Long userId, @RequestHeader("Authorization") String jwt) throws UserException, TwitException {
+    public ResponseEntity<List<TwitDto>> findTwitByLikesContainesUser(@PathVariable("userId") Long userId, @RequestHeader("Authorization") String jwt) throws UserException, TwitException {
         User user = userService.findUserProfileByJwt(jwt);
         List<Twit> twits = twitService.findByLikesContainsUser(user);
         List<TwitDto> twitDtos = TwitDtoMapper.toTwitDtos(twits, user);
