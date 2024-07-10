@@ -45,6 +45,7 @@ public class WebSecurityConfig {
         http
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api/twits/image").permitAll()
                         .requestMatchers("/api/**").authenticated()
                         .anyRequest().permitAll()
                 ).addFilterBefore(new JwtTokenValidator(), BasicAuthenticationFilter.class)
@@ -54,25 +55,6 @@ public class WebSecurityConfig {
                 .formLogin(withDefaults());
 
         return http.build();
-
-        /*       return http
-                .authorizeRequests(auth -> auth
-                        .requestMatchers(
-                                new AntPathRequestMatcher("/login"),
-                                new AntPathRequestMatcher("/signup"),
-                                new AntPathRequestMatcher("/user")
-                        ).permitAll()
-                        .anyRequest().authenticated())
-                .formLogin(formLogin -> formLogin
-                        .loginPage("/login")
-                        .defaultSuccessUrl("/articles")
-                )
-                .logout(logout -> logout
-                        .logoutSuccessUrl("/login")
-                        .invalidateHttpSession(true)
-                )
-                .csrf(AbstractHttpConfigurer::disable)
-                .build();*/
     }
 
     private CorsConfigurationSource corsConfigartionSource() {

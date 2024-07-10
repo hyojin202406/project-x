@@ -12,6 +12,8 @@ import com.hyojin.backx.service.TwitService;
 import com.hyojin.backx.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -66,20 +68,11 @@ public class TwitController {
         return new ResponseEntity<>(twitDto, HttpStatus.CREATED);
     }
 
-//    private String saveImage(MultipartFile image) throws IOException {
-//        // 이미지 저장 로직 구현
-//        // 예시: 파일을 로컬 디렉토리에 저장하고 URL 반환
-//        String fileName = UUID.randomUUID().toString() + "_" + image.getOriginalFilename();
-//        Path filePath = Paths.get("images/" + fileName);
-//        Files.copy(image.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
-//        return filePath.toString(); // 또는 이미지에 접근할 수 있는 URL 반환
-//    }
-
     public String saveImage(MultipartFile image) throws IOException {
         String fileName = UUID.randomUUID().toString() + "_" + image.getOriginalFilename();
         Path filePath = Paths.get(uploadDir, fileName);
         Files.copy(image.getInputStream(), filePath);
-        return filePath.toString(); // 파일 경로를 반환하거나, 이미지에 접근할 수 있는 URL을 반환할 수 있습니다.
+        return fileName; // 파일 경로를 반환하거나, 이미지에 접근할 수 있는 URL을 반환할 수 있습니다.
     }
 
     @PostMapping("/reply")
@@ -126,6 +119,13 @@ public class TwitController {
         }
 
         return new ResponseEntity<>(twitDtos, HttpStatus.OK);
+    }
+
+    @GetMapping("/image")
+    public ResponseEntity<?> returnImage(@RequestParam("image") String image) {
+        String path = "C:\\study\\image\\"; //이미지가 저장된 위치
+        Resource resource = new FileSystemResource(path + image);
+        return new ResponseEntity<>(resource, HttpStatus.OK);
     }
 
     @GetMapping("/user/{userId}")

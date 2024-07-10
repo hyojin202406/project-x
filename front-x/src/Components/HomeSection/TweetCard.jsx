@@ -12,6 +12,7 @@ import ReplyModal from './ReplyModal'
 import { FavoriteOutlined } from '@mui/icons-material'
 import { useDispatch } from 'react-redux'
 import { createReTweet, likeTweet } from '../Store/Twit/Action'
+import moment from 'moment'
 
 const TweetCard = ({ item }) => {
   const [anchorEl, setAnchorEl] = useState(null)
@@ -25,6 +26,7 @@ const TweetCard = ({ item }) => {
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget)
   }
+
   const handleClose = () => {
     setAnchorEl(null)
   }
@@ -52,6 +54,10 @@ const TweetCard = ({ item }) => {
     console.log('handle like tweet ')
   }
 
+  const timeAgo = (createdAt) => {
+    return moment(createdAt).fromNow()
+  } // createdAt을 moment 객체로 변환하여 현재 시간과 비교
+
   return (
     <React.Fragment>
       {/* <div className='flex items-center font-semibold text-gray-700 py-2'>
@@ -73,11 +79,11 @@ const TweetCard = ({ item }) => {
               <span className="text-gray-600">
                 @{item?.user?.fullName.split(' ').join('_').toLowerCase()}
               </span>
-              <img
-                className="ml-2 w-5 h-5"
-                src="https://abs-0.twimg.com/emoji/v2/svg/1f31e.svg"
-                alt=""
-              />
+              &nbsp;
+              <span className="text-gray-300">
+                {/* 현재 시간과 비교하여 시간 표시 */}
+                {item?.createdAt && timeAgo(item.createdAt)}
+              </span>
             </div>
 
             <div>
@@ -111,12 +117,15 @@ const TweetCard = ({ item }) => {
               className="cursor-pointer"
             >
               <p className="mb-2 p-0">{item?.content}</p>
-              <img
-                className="w-[28rem] border border-gray-400 p-5 rounded-md"
-                // src="https://plus.unsplash.com/premium_photo-1718747305176-8dab6d6abece?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-                src={item?.image}
-                alt=""
-              />
+              {/* 이미지 출력 */}
+              {item?.image && (
+                <img
+                  src={
+                    'http://localhost:8080/api/twits/image?image=' + item.image
+                  }
+                  alt="image from spring"
+                />
+              )}
             </div>
             <div className="py-5 flex flex-wrap justify-between items-center">
               <div className="space-x-3 flex items-center text-gray-600">
